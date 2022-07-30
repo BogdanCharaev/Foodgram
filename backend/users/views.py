@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from recipes.pagination import CustomPagination
 from users.models import Follow, User
 from users.serializers import FollowListSerializer, FollowSerializer
 
@@ -29,16 +30,14 @@ class FollowApiView(APIView):
 
 
 class FollowListAPIView(ListAPIView):
-
+    pagination_class = CustomPagination
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
         queryset = User.objects.filter(following__user=user)
-        # page = self.paginate_queryset(queryset)
         serializer = FollowListSerializer(
             queryset, many=True,
             context={'request': request}
         )
-        # return self.get_paginated_response(serializer.data)
         return Response(serializer.data)

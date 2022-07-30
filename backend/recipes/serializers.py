@@ -113,7 +113,8 @@ class RecipePostSerializer(serializers.ModelSerializer):
             if int(amount) < MIN_VALUE_AMOUNT:
                 raise serializers.ValidationError({
                     'amount': (
-                        'Количество ингредиента не может быть меньше нуля.'
+                        (f'Количество ингредиента не может быть меньше '
+                         f'{MIN_VALUE_AMOUNT}.')
                     )
                 })
 
@@ -126,14 +127,15 @@ class RecipePostSerializer(serializers.ModelSerializer):
         for tag in tags:
             if tag in tags_list:
                 raise serializers.ValidationError({
-                    'tags': 'Тэн не может быть неуникальным.'
+                    'tags': 'Тэг не может быть неуникальным.'
                 })
             tags_list.append(tag)
 
         cooking_time = self.initial_data.get('cooking_time')
         if int(cooking_time) < MIN_VALUE_COOKING_TIME:
             raise serializers.ValidationError({
-                'cooking_time': 'Время приготовления не может быть меньше 0.'
+                'cooking_time': (f'Время приготовления не может быть меньше '
+                                 f'{MIN_VALUE_COOKING_TIME}.')
             })
 
         return data
@@ -245,19 +247,6 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
                 message='Данный рецепт уже добавлен в корзину.'
             ),
         )
-
-    def validate(self, data):
-        request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        recipe = data['recipe']
-        if ShoppingCart.objects.filter(
-            user=request.user, recipe=recipe
-        ).exists():
-            raise serializers.ValidationError({
-                'status': 'Рецепт уже есть в списке покупок!'
-            })
-        return data
 
     def to_representation(self, instance):
         request = self.context.get('request')

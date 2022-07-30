@@ -79,7 +79,8 @@ class Recipe(models.Model):
         validators=(
             MinValueValidator(
                 MIN_VALUE_COOKING_TIME,
-                message='Время приготовления не может быть меньше единицы'
+                message=(f'Время приготовления не может быть меньше'
+                         f'{MIN_VALUE_COOKING_TIME}')
             ),
         )
     )
@@ -107,7 +108,8 @@ class AmountOfIngredient(models.Model):
         validators=(
             MinValueValidator(
                 MIN_VALUE_AMOUNT,
-                message='Количество ингредиента не может быть меньше единицы'
+                message=(f'Количество ингредиента не может быть меньше '
+                         f'{MIN_VALUE_AMOUNT}')
             ),
         ))
 
@@ -151,11 +153,11 @@ class ShoppingCart(models.Model):
 
     class Meta:
         ordering = ('user',)
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='unique_user_recipe_shopping_cart'
             ),
-        ]
+        )
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'

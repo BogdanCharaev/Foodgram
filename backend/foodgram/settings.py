@@ -30,11 +30,11 @@ SECRET_KEY = os.getenv(
     default='django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
 )
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = os.getenv('DEBUG', default=False) == 'True'
 
 ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
-    default='localhost 127.0.0.1 [::1] testserver web').split(' ')
+    default='localhost 127.0.0.1 [::1] testserver web').split('')
 
 
 # Application definition
