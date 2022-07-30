@@ -1,8 +1,8 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
-from recipes.models import Recipe
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
+from recipes.models import Recipe
 from users.models import Follow, User
 
 
@@ -19,7 +19,10 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
-    is_subscribed = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_is_subscribed'
+    )
 
     class Meta:
         model = User
@@ -43,13 +46,13 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = ('user', 'author')
-        validators = [
+        validators = (
             UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
                 fields=('user', 'author'),
                 message='Вы подписаны на данного автора.'
-            )
-        ]
+            ),
+        )
 
     def validate(self, data):
         if data['user'] == data['author']:
@@ -77,9 +80,18 @@ class FollowRecipesSerializer(serializers.ModelSerializer):
 
 
 class FollowListSerializer(serializers.ModelSerializer):
-    is_subscribed = serializers.SerializerMethodField(read_only=True)
-    recipes = serializers.SerializerMethodField(read_only=True)
-    recipes_count = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_is_subscribed'
+        )
+    recipes = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_recipes'
+        )
+    recipes_count = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_recipes_count'
+        )
 
     class Meta:
         model = User

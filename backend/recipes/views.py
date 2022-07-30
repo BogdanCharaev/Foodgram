@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+from foodgram.settings import FILE_NAME
 from recipes.filters import IngredientSearchFilter, RecipeFilter
 from recipes.models import (AmountOfIngredient, Favorite, Ingredient, Recipe,
                             ShoppingCart, Tag)
@@ -15,6 +16,8 @@ from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
                                  RecipeListRetriveSerializer,
                                  RecipePostSerializer, ShoppingCartSerializer,
                                  TagSerializer)
+
+CONTENT_TYPE = 'text/csv'
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -94,7 +97,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             f'{ingredient["ingredient__measurement_unit"]}'
             for ingredient in ingredients
         ])
-        filename = 'shopping_cart.txt'
-        response = HttpResponse(shopping_cart, content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename={filename}'
+        response = HttpResponse(shopping_cart, content_type=CONTENT_TYPE)
+        response['Content-Disposition'] = f'attachment; filename={FILE_NAME}'
         return response

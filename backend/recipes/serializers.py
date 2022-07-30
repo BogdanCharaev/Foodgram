@@ -1,9 +1,12 @@
+from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
-from users.serializers import CustomUserSerializer
+from rest_framework.validators import UniqueTogetherValidator
 
+from foodgram.settings import MIN_VALUE_AMOUNT, MIN_VALUE_COOKING_TIME
 from recipes.models import (AmountOfIngredient, Favorite, Ingredient, Recipe,
                             ShoppingCart, Tag)
+from users.serializers import CustomUserSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -33,7 +36,10 @@ class IngredientAmountListRetriveSerializer(serializers.ModelSerializer):
 class RecipeListRetriveSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
-    ingredients = serializers.SerializerMethodField(read_only=True)
+    ingredients = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_ingredients'
+    )
 
     class Meta:
         model = Recipe
@@ -49,7 +55,7 @@ class RecipeListRetriveSerializer(serializers.ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-        ingredients = AmountOfIngredient.objects.filter(recipe=obj)
+        ingredients = Recipe.recipe_ingredients.all()
         data = IngredientAmountListRetriveSerializer(
             ingredients,
             many=True
@@ -104,7 +110,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
                 })
             ingredients_list.append(ingredient_id)
             amount = ingredient['amount']
-            if int(amount) <= 0:
+            if int(amount) < MIN_VALUE_AMOUNT:
                 raise serializers.ValidationError({
                     'amount': (
                         'Количество ингредиента не может быть меньше нуля.'
@@ -125,13 +131,14 @@ class RecipePostSerializer(serializers.ModelSerializer):
             tags_list.append(tag)
 
         cooking_time = self.initial_data.get('cooking_time')
-        if int(cooking_time) <= 0:
+        if int(cooking_time) < MIN_VALUE_COOKING_TIME:
             raise serializers.ValidationError({
                 'cooking_time': 'Время приготовления не может быть меньше 0.'
             })
 
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         author = self.context.get('request').user
         tags = validated_data.pop('tags')
@@ -149,6 +156,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
             recipe.tags.add(tag)
         return recipe
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         instance.image = validated_data.get('image', instance.image)
         instance.name = validated_data.get('name', instance.name)
@@ -201,6 +209,13 @@ class FavoriteSerializer(serializers.ModelSerializer):
             'user',
             'recipe'
         )
+        validators = (
+            UniqueTogetherValidator(
+                queryset=Favorite.objects.all(),
+                fields=('user', 'recipe'),
+                message='Данный рецепт уже добавлен в избранное.'
+            ),
+        )
 
     def validate(self, data):
         request = self.context.get('request')
@@ -223,6 +238,13 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCart
         fields = ('user', 'recipe')
+        validators = (
+            UniqueTogetherValidator(
+                queryset=ShoppingCart.objects.all(),
+                fields=('user', 'recipe'),
+                message='Данный рецепт уже добавлен в корзину.'
+            ),
+        )
 
     def validate(self, data):
         request = self.context.get('request')

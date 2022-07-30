@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    default='django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    default='localhost 127.0.0.1 [::1] testserver web').split(' ')
 
 
 # Application definition
@@ -42,8 +51,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'djoser',
     'recipes.apps.RecipesConfig',
-    'django_filters', 
-    
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -82,8 +90,13 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE',
+                            default='django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='db'),
+        'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
 
@@ -159,3 +172,6 @@ DJOSER = {
     },
     'HIDE_USERS': False,
 }
+MIN_VALUE_COOKING_TIME = 1
+MIN_VALUE_AMOUNT = 1
+FILE_NAME = 'shopping_cart.txt'
