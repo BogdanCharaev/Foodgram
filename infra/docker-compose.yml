@@ -20,7 +20,7 @@ services:
     env_file:
       - ./.env
 
-  backend:
+  frontend:
     image: charaevbogdan/front:v1
     restart: always
     volumes:
