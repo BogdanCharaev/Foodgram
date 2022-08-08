@@ -1,3 +1,4 @@
+https://github.com/bogdancharaev/foodgram-project-react/actions/workflows/main.yml/badge.svg
 # Foodgram продуктовый помощник.  
 
 ## Описание.
