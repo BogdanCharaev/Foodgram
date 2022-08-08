@@ -22,7 +22,6 @@ services:
 
   frontend:
     image: charaevbogdan/front:v1
-    
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
