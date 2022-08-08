@@ -23,7 +23,7 @@
 Минимально изменен page_size_query_param и пагинация стала кастомной.  
 
 
-Скопирован и вставлен кастомный пермишен IsAuthorOrReadOnly который на самом деле IsOwnerOrReadOnly.  
+Скопирован и вставлен кастомный пермишен  IsAuthorOrReadOnly который на самом деле IsOwnerOrReadOnly.  
 
 
 Есть достаточно SerializerMethodField, особенно в FollowListSerializer из users.serializers  
