@@ -33,6 +33,7 @@
 Есть достаточно SerializerMethodField, особенно в FollowListSerializer из users.serializers  
 
 
+Установка на linux
 
 
 
