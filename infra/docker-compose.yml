@@ -9,7 +9,7 @@ services:
       - ./.env
   
   backend:
-    image: charaevbogdan/backend:v1
+    image: charaevbogdan/back:v1
     restart: always
     
     volumes:
