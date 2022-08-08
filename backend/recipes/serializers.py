@@ -65,11 +65,10 @@ class RecipeListRetriveSerializer(serializers.ModelSerializer):
 
     def get_ingredients(self, obj):
         ingredients = AmountOfIngredient.objects.filter(recipe=obj)
-        data = IngredientAmountListRetriveSerializer(
+        return IngredientAmountListRetriveSerializer(
             ingredients,
             many=True
         ).data
-        return data
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
@@ -209,8 +208,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
         return instance
 
     def to_representation(self, instance):
-        data = RecipeListRetriveSerializer(instance, context=self.context).data
-        return data
+        return RecipeListRetriveSerializer(instance, context=self.context).data
 
 
 class RecipeToRepresentSerializer(serializers.ModelSerializer):
