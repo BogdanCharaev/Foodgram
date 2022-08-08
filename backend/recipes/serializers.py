@@ -40,6 +40,14 @@ class RecipeListRetriveSerializer(serializers.ModelSerializer):
         read_only=True,
         method_name='get_ingredients'
     )
+    is_favorited = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_is_favorited'
+    )
+    is_in_shopping_cart = serializers.SerializerMethodField(
+        read_only=True,
+        method_name='get_is_in_shopping_cart'
+    )
 
     class Meta:
         model = Recipe
@@ -51,16 +59,31 @@ class RecipeListRetriveSerializer(serializers.ModelSerializer):
             'name',
             'image',
             'text',
-            'cooking_time'
+            'cooking_time',
+            'is_favorited',
+            'is_in_shopping_cart'
         )
 
     def get_ingredients(self, obj):
-        ingredients = Recipe.recipe_ingredients.all()
+#        ingredients = Recipe.recipe_ingredients.all()
+        ingredients = AmountOfIngredient.objects.filter(recipe=obj)
         data = IngredientAmountListRetriveSerializer(
             ingredients,
             many=True
         ).data
         return data
+    def get_is_favorited(self, obj):
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        return Favorite.objects.filter(user=request.user, recipe=obj).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        request = self.context.get('request')
+        if not request or request.user.is_anonymous:
+            return False
+        return ShoppingCart.objects.filter(
+            user=request.user, recipe=obj).exists()
 
 
 class IngredientAmountPostSerializer(serializers.ModelSerializer):
@@ -231,8 +254,10 @@ class FavoriteSerializer(serializers.ModelSerializer):
         return data
 
     def to_representation(self, instance):
-        data = RecipeToRepresentSerializer(instance, context=self.context).data
-        return data
+        request = self.context.get('request')
+        context = {'request': request}
+        return RecipeToRepresentSerializer(
+            instance.recipe, context=context).data
 
 
 class ShoppingCartSerializer(serializers.ModelSerializer):

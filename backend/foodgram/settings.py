@@ -30,11 +30,13 @@ SECRET_KEY = os.getenv(
     default='django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
 )
 
-DEBUG = os.getenv('DEBUG', default=False) == 'True'
+DEBUG = True
+#os.getenv('DEBUG', default=False) == 'True'
 
-ALLOWED_HOSTS = os.getenv(
-    'ALLOWED_HOSTS',
-    default='localhost 127.0.0.1 [::1] testserver web').split('')
+ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = os.getenv(
+#    'ALLOWED_HOSTS',
+#    default='localhost 127.0.0.1 [::1] testserver web').split('')
 
 
 # Application definition
@@ -137,7 +139,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -151,7 +153,7 @@ AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -175,3 +177,8 @@ DJOSER = {
 MIN_VALUE_COOKING_TIME = 1
 MIN_VALUE_AMOUNT = 1
 FILE_NAME = 'shopping_cart.txt'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

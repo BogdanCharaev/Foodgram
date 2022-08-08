@@ -36,8 +36,9 @@ class FollowListAPIView(ListAPIView):
     def get(self, request):
         user = request.user
         queryset = User.objects.filter(following__user=user)
+        page = self.paginate_queryset(queryset)
         serializer = FollowListSerializer(
-            queryset, many=True,
+            page, many=True,
             context={'request': request}
         )
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
