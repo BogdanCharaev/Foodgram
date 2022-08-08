@@ -1,11 +1,10 @@
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
-
 from foodgram.settings import MIN_VALUE_AMOUNT, MIN_VALUE_COOKING_TIME
 from recipes.models import (AmountOfIngredient, Favorite, Ingredient, Recipe,
                             ShoppingCart, Tag)
+from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from users.serializers import CustomUserSerializer
 
 
@@ -65,13 +64,13 @@ class RecipeListRetriveSerializer(serializers.ModelSerializer):
         )
 
     def get_ingredients(self, obj):
-#        ingredients = Recipe.recipe_ingredients.all()
         ingredients = AmountOfIngredient.objects.filter(recipe=obj)
         data = IngredientAmountListRetriveSerializer(
             ingredients,
             many=True
         ).data
         return data
+
     def get_is_favorited(self, obj):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:

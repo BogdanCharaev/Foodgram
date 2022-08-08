@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from foodgram.settings import MIN_VALUE_AMOUNT, MIN_VALUE_COOKING_TIME
 from users.models import User
 

@@ -1,11 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-
 from foodgram.settings import FILE_NAME
 from recipes.filters import IngredientSearchFilter, RecipeFilter
 from recipes.models import (AmountOfIngredient, Favorite, Ingredient, Recipe,
@@ -16,6 +11,10 @@ from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
                                  RecipeListRetriveSerializer,
                                  RecipePostSerializer, ShoppingCartSerializer,
                                  TagSerializer)
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 CONTENT_TYPE = 'text/csv'
 
@@ -46,7 +45,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeListRetriveSerializer
         return RecipePostSerializer
 
-    @action(detail=True, methods=['post'], permission_classes=(IsAuthenticated,))
+    @action(
+        detail=True,
+        methods=['post'],
+        permission_classes=(IsAuthenticated,)
+    )
     def favorite(self, request, pk):
         data = {'user': request.user.id, 'recipe': pk}
         serializer = FavoriteSerializer(
@@ -66,7 +69,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         favorite.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=True, methods=['post'], permission_classes=(IsAuthenticated,))
+    @action(
+        detail=True,
+        methods=['post'],
+        permission_classes=(IsAuthenticated,)
+    )
     def shopping_cart(self, request, pk):
         data = {'user': request.user.id, 'recipe': pk}
         serializer = ShoppingCartSerializer(

@@ -30,14 +30,11 @@ SECRET_KEY = os.getenv(
     default='django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
 )
 
-DEBUG = True
-#os.getenv('DEBUG', default=False) == 'True'
+DEBUG = os.getenv('DEBUG', default=False) == 'True'
 
-ALLOWED_HOSTS = ['*']
-#ALLOWED_HOSTS = os.getenv(
-#    'ALLOWED_HOSTS',
-#    default='localhost 127.0.0.1 [::1] testserver web').split('')
-
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    default='localhost 127.0.0.1 [::1] testserver web').split('')
 
 # Application definition
 
@@ -140,12 +137,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # DRF
 

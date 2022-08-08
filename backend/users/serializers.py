@@ -1,8 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from recipes.models import Recipe
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
-
-from recipes.models import Recipe
 from users.models import Follow, User
 
 
@@ -64,12 +63,6 @@ class FollowSerializer(serializers.ModelSerializer):
                 'Вы не можете подписаться на себя!'
             )
         return data
-#    def validate(self, data):
-#        if data['user'] == data['author']:
-#            raise serializers.ValidationError(
-#                'Вы не можете подписываться на себя.'
-#            )
-#        return data
 
     def to_representation(self, instance):
         request = self.context.get('request')
@@ -93,15 +86,15 @@ class FollowListSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField(
         read_only=True,
         method_name='get_is_subscribed'
-        )
+    )
     recipes = serializers.SerializerMethodField(
         read_only=True,
         method_name='get_recipes'
-        )
+    )
     recipes_count = serializers.SerializerMethodField(
         read_only=True,
         method_name='get_recipes_count'
-        )
+    )
 
     class Meta:
         model = User
