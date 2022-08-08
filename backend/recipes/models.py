@@ -115,7 +115,7 @@ class AmountOfIngredient(models.Model):
     class Meta:
         ordering = ('id',)
         verbose_name = 'Количество ингредиента'
-        verbose_name = 'Количество ингредиентов'
+        verbose_name_plural = 'Количество ингредиентов'
 
 
 class Favorite(models.Model):

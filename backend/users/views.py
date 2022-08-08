@@ -30,7 +30,7 @@ class FollowApiView(APIView):
 
 class FollowListAPIView(ListAPIView):
     pagination_class = CustomPagination
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         user = request.user
