@@ -9,7 +9,7 @@ services:
       - ./.env
   
   backend:
-    image: charaevbogdan/fgram:latest
+    image: charaevbogdan/back:v1
     restart: always
     
     volumes:
@@ -20,10 +20,9 @@ services:
     env_file:
       - ./.env
 
-  frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+  backend:
+    image: charaevbogdan/front:v1
+    restart: always
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
