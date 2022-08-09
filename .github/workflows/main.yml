@@ -60,7 +60,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo docker pull charaevbogdan/fgram:latest
-            sudo docker pull charaevbogdan/infra:v1
+            sudo docker pull charaevbogdan/front:v1
             sudo docker-compose stop
             sudo docker-compose rm backend
             touch .env 
