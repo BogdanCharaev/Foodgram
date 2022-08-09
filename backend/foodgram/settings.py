@@ -27,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = 'django-insecure-2*cbajb77yw3d21fny&+w2j3x1$b+y(!r(t^7iit0^=e7j^e6r'
-# DEBUG = os.getenv('DEBUG', default=False) == 'True'
-DEBUG = True
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(', ')
-ALLOWED_HOSTS = ['51.250.111.100', 'backend:8000', 'backend', '127.0.0.1', 'testserver']
+DEBUG = os.getenv('DEBUG', default=False) == 'True'
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split('')
+
 # Application definition
 
 INSTALLED_APPS = [
