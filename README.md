@@ -4,6 +4,19 @@ https://github.com/BogdanCharaev/foodgram-project-react/actions/workflows/main.y
 ## Описание.
 
 
+
+## Установка на Ubuntu
+
+Для запуска проекта нужно собрать и запустить контейнер из образа. Для этого нужно установить сам докер с плагином docker-compose:
+
+    sudo apt install curl
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+    sudo apt install docker-ce docker-compose -y 
+
+
+
+
 Финальный проект на курсе Python - разработчик Яндекс Практикума(На самом деле оригинальное название задания просто продуктовый помощник, а не очередной продуктовый помощник).
 
 Задание по дефолту это создать сервис на котором пользователь может оставить рецепт, подписываться на других оставителей рецептов и т п.  
