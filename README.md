@@ -49,13 +49,15 @@ https://github.com/BogdanCharaev/foodgram-project-react/actions/workflows/main.y
     DOCKER_PASSWORD=<пароль от DockerHub>
     DOCKER_USERNAME=<имя пользователя>
 
-Это данные для подключения к вашему серверу
+Это данные для подключения к вашему серверу:  
+
     USER=username
     HOST=IP
     PASSPHRASE=пароль, если есть
     SSH_KEY=ssh ключ
 
-Тг бот может отправлять сообщение на указанный id, после того как воркфлоу выполнен
+Тг бот может отправлять сообщение на указанный id, после того как воркфлоу выполнен:  
+
     TELEGRAM_TO=ID чата получается через userinfobot
     TELEGRAM_TOKEN=Токен вашего бота у BotFather
 
