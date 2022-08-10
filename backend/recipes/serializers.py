@@ -122,14 +122,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 'ingredients': 'Выберите ингредиент.'
             })
-#        ingredients_list = []
         for ingredient in ingredients:
-#             ingredient_id = ingredient['id']
-#             if ingredient_id in ingredients_list:
-#                 raise serializers.ValidationError({
-#                     'ingredients': 'Ингредиенты не могут быть неуникальными.'
-#                 })
-#            ingredients_list.append(ingredient_id)
             amount = ingredient['amount']
             if int(amount) < MIN_VALUE_AMOUNT:
                 raise serializers.ValidationError({
