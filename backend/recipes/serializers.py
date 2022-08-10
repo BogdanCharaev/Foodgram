@@ -127,7 +127,8 @@ class RecipePostSerializer(serializers.ModelSerializer):
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
                 raise serializers.ValidationError({
-                    'ingredients_not_uniq': 'Ингредиенты не могут быть неуникальными.'
+                    'ingredients_not_uniq':
+                    'Ингредиенты не могут быть неуникальными.'
                 })
             ingredients_list.append(ingredient_id)
             amount = ingredient['amount']
