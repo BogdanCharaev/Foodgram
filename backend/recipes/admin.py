@@ -11,7 +11,7 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'measurement_unit')
-    list_filter = ('name',)
+    list_filter = ('measurement_unit',)
     search_fields = ('name',)
 
 
@@ -25,11 +25,19 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(AmountOfIngredient)
 class AmountOfIngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'ingredient', 'recipe', 'amount')
+    search_fields = (
+        'recipe__name',
+        'ingredient__name',
+        'recipe__author__username',
+        'recipe__author__email'
+    )
 
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'recipe')
+    list_display = ('id', 'user', 'recipe',)
+    list_filter = ('recipe__tags',)
+    search_fields = ('recipe__name', 'author__username', 'author__email')
 
 
 @admin.register(ShoppingCart)
