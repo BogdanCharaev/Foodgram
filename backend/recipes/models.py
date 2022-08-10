@@ -45,6 +45,9 @@ class Ingredient(models.Model):
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
+    def __str__(self):
+        return self.name
+
 
 class Recipe(models.Model):
     author = models.ForeignKey(
@@ -89,6 +92,9 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
+    def __str__(self):
+        return self.name
+
 
 class AmountOfIngredient(models.Model):
     ingredient = models.ForeignKey(
@@ -117,6 +123,9 @@ class AmountOfIngredient(models.Model):
         verbose_name = 'Количество ингредиента'
         verbose_name_plural = 'Количество ингредиентов'
 
+    def __str__(self):
+        return f'{self.ingredient} в рецепте {self.recipe}'
+
 
 class Favorite(models.Model):
     user = models.ForeignKey(
@@ -139,6 +148,9 @@ class Favorite(models.Model):
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
 
+    def __str__(self):
+        return f'{self.user} добавил в избранное {self.recipe}'
+
 
 class ShoppingCart(models.Model):
     user = models.ForeignKey(
@@ -160,3 +172,6 @@ class ShoppingCart(models.Model):
         )
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
+
+    def __str__(self):
+        return f'{self.user} добавил в корзину для покупок {self.recipe}'

@@ -11,15 +11,15 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'measurement_unit')
-    list_filter = ('measurement_unit',)
     search_fields = ('name',)
+    list_filter = ('measurement_unit',)
 
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'author',)
+    search_fields = ('name', 'author__username', 'author__email')
     list_filter = ('author', 'name', 'tags')
-    search_fields = ('name',)
 
 
 @admin.register(AmountOfIngredient)
@@ -31,15 +31,18 @@ class AmountOfIngredientAdmin(admin.ModelAdmin):
         'recipe__author__username',
         'recipe__author__email'
     )
+    list_filter = ('recipe__tags',)
 
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'recipe',)
+    search_fields = ('recipe__name', 'user__username', 'user__email')
     list_filter = ('recipe__tags',)
-    search_fields = ('recipe__name', 'author__username', 'author__email')
 
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_dislay = ('id', 'user', 'recipe')
+    search_fields = ('recipe__name', 'user__username', 'user__email')
+    list_filter = ('recipe__tags',)
